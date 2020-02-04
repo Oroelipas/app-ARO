@@ -1,7 +1,5 @@
 package com.example.upnadeportes;
 
-import android.util.Log;
-
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -14,6 +12,10 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+/**
+ * Clase copiada de https://stackoverflow.com/questions/17045795/making-a-https-request-using-android-volley
+ * Sirve para poder hacer conexiones de HTTPS con volley
+ */
 public class HttpsTrustManager implements X509TrustManager {
     private static TrustManager[] trustManagers;
     private static final X509Certificate[] _AcceptedIssuers = new X509Certificate[]{};
@@ -44,11 +46,18 @@ public class HttpsTrustManager implements X509TrustManager {
         return _AcceptedIssuers;
     }
 
+    /**
+     * Por lo que veo esta funcion esta usando dos metodos estáticos de HttpsURLConnection
+     * HttpsURLConnection.setDefaultHostnameVerifier()
+     * HttpsURLConnection.setDefaultSSLSocketFactory()
+     * Me imagino que permitir https consistirá en hacer esas dos llamadas.
+     */
     public static void allowAllSSL() {
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
 
             @Override
             public boolean verify(String arg0, SSLSession arg1) {
+                // Esto no esta verificando nada
                 return true;
             }
 

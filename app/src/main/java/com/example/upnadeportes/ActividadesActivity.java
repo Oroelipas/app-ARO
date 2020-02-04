@@ -19,27 +19,21 @@ public class ActividadesActivity extends AppCompatActivity {
     private static final String TAG = ActividadesActivity.class.getName();
     private Button btnActividades;
 
-    private RequestQueue mRequestQueue;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividades);
 
-        btnActividades = (Button) findViewById(R.id.btnActividades);
+        btnActividades =  findViewById(R.id.btnActividades);
 
-
+        // Añadir el OnClickListener
         btnActividades.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v){
                                                   actividades();
                                               }
                                           }
-
         );
-
-
-        this.mRequestQueue = Volley.newRequestQueue(this);
 
     }
 
@@ -50,8 +44,8 @@ public class ActividadesActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
-                        //Log.d("Response", response);
+                        // Este bucle es solo para poder imprimir una String muy larga en varias veces
+                        // Porque el problema esta en que la funcion Log() tiene una logitud maxima
                         int maxLogSize = 1000;
                         for(int i = 0; i <= response.length() / maxLogSize; i++) {
                             int start = i * maxLogSize;
@@ -64,14 +58,14 @@ public class ActividadesActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // error
-                        //Log.i("error",error.getMessage());
                         Log.i("status code;",  String.valueOf(error.networkResponse.statusCode));
                         Log.i("error", "de OnErrorResponse");
                     }
                 }
         );
-        mRequestQueue.add(req);
+
+        // Añadir al request al singleton de RequestQueue
+        SingletonRequestQueue.getInstance(this).addToRequestQueue(req);
     }
 }
 

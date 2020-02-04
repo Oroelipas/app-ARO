@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView txtLoginError;
     private EditText passwordText;
     private EditText niaText;
-    private RequestQueue mRequestQueue;
 
 
     @Override
@@ -36,24 +35,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //si quitamos estas lineas entonces podemos ver las cookies en parseNetworkResponse
-        // al parecer estas lineas cojen a cookie antes que tu y la ocultan
-        CookieManager manager = new CookieManager();
-        CookieHandler.setDefault( manager  );
+        // Esta linea se encarga de mantener la sesion guardando las cookies
+        // Se aplica a todas las activitades y no es necesario repetirlo
+        CookieHandler.setDefault( new CookieManager());
 
-
-        // esto es para poder hacer conexion https
+        // Esto es para poder hacer conexion https
+        // Tambien solo es necesario llamarlo una vez
         HttpsTrustManager.allowAllSSL();
 
-        this.mRequestQueue = Volley.newRequestQueue(this);
 
-
-        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin      = findViewById(R.id.btnLogin);
         txtLoginError = findViewById(R.id.txtLoginError);
-        passwordText   = (EditText)findViewById(R.id.passwordText);
-        niaText   = (EditText)findViewById(R.id.niaText);
+        passwordText  = findViewById(R.id.passwordText);
+        niaText       = findViewById(R.id.niaText);
 
-
+        // Añadir el OnClickListener
         btnLogin.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v){
@@ -74,8 +70,9 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
-                        //ESTO ES SOLO PARA IMPRIMIR STRINGS LARGAS
+
+                        // Este bucle es solo para poder imprimir una String muy larga en varias veces
+                        // Porque el problema esta en que la funcion Log() tiene una logitud maxima
                         int maxLogSize = 1000;
                         for(int i = 0; i <= response.length() / maxLogSize; i++) {
                             int start = i * maxLogSize;
@@ -91,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // error
                         //Log.i("error",error.getMessage());
                         Log.i("error", "de OnErrorResponse");
                         txtLoginError.setText("Usuario o contraseña incorrectos");
@@ -109,7 +105,9 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
-        mRequestQueue.add(req);
+
+        // Añadir al request al singleton de RequestQueue
+        SingletonRequestQueue.getInstance(this).addToRequestQueue(req);
     }
 
 }
