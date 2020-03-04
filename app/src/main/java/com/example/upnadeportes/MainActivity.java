@@ -1,5 +1,6 @@
 package com.example.upnadeportes;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -65,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void irWebView(View view) {
+        System.out.println("Holaaaaaaa");
+        Intent intent = new Intent(getApplicationContext(), InicioSesionWebActivity.class);
+        startActivity(intent);
     }
 
 
