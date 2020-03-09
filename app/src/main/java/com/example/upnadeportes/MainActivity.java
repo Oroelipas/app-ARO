@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void irWebView(View view) {
-        System.out.println("Holaaaaaaa");
         Intent intent = new Intent(getApplicationContext(), InicioSesionWebActivity.class);
         startActivity(intent);
     }

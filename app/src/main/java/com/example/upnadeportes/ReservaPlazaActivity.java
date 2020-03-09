@@ -46,7 +46,7 @@ public class ReservaPlazaActivity extends Activity {
 
 
         miVisorWeb.getSettings().setJavaScriptEnabled(true);
-        miVisorWeb.setWebChromeClient(new WebChromeClient());
+        //miVisorWeb.setWebChromeClient(new WebChromeClient());
         miVisorWeb.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url){
@@ -57,6 +57,7 @@ public class ReservaPlazaActivity extends Activity {
                 miVisorWeb.evaluateJavascript(javaScript, null);
 
             }
+
         });
         miVisorWeb.loadUrl(url);
 
