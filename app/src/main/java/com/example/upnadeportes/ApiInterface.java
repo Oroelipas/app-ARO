@@ -9,9 +9,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-    @GET("actividades/reservas/actividades")
-    Call<ResponseBody> getWeb(
-    );
 
     @FormUrlEncoded
     @POST("actividades/ajax/TInnova_v2/ReservaClasesPuntuales_Selector/llamadaAjax/solicitaDisponibilidad")
