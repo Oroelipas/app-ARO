@@ -4,8 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 // https://stackoverflow.com/questions/9605913/how-do-i-parse-json-in-android
+// https://developer.android.com/reference/org/json/JSONObject.html
+
 public class JsonDisponibilidades {
 
     JSONObject myJSON;
@@ -16,7 +17,6 @@ public class JsonDisponibilidades {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -37,6 +37,7 @@ public class JsonDisponibilidades {
         return null;
     }
 
+
     public JSONObject getActividad(int id) {
         try {
             JSONArray actividades = myJSON.getJSONArray("Actividades");
@@ -51,6 +52,8 @@ public class JsonDisponibilidades {
         }
         return null;
     }
+
+
     public JSONObject getMonitor(int id) {
         try {
             JSONArray monitores = myJSON.getJSONArray("Monitores");
@@ -65,6 +68,8 @@ public class JsonDisponibilidades {
         }
         return null;
     }
+
+
     public JSONObject getCentro(int id) {
         try {
             JSONArray centros = myJSON.getJSONArray("Centros");
@@ -79,6 +84,8 @@ public class JsonDisponibilidades {
         }
         return null;
     }
+
+
     public JSONObject getRecurso(int id) {
         try {
             JSONArray recursos = myJSON.getJSONArray("Recursos");
@@ -93,9 +100,6 @@ public class JsonDisponibilidades {
         }
         return null;
     }
-
-
-
 
 
 }

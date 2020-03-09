@@ -64,6 +64,7 @@ public class InicioSesionWebActivity extends Activity {
                 if(url.equals("https://extuniv.unavarra.es/actividades/reservas/actividades")){
                     // Si ya estamos en la lista de activiades entonces ir a la actividad que queriamos reservar
                     String javaScript = "javascript:RPCv2.selectorpago('"+codigoActividad+"','"+fechaActividad+"','"+horaActividad+"', '"+nombreActividad+"', '"+centroActividad+"', '', '"+nomProfActividad+"', '"+recursoActividad+"')";
+                    System.out.println(javaScript);
                     miVisorWeb.evaluateJavascript(javaScript, null);
                 }
             }
