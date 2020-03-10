@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -45,7 +46,7 @@ public class InicioSesionWebActivity extends Activity {
 
         // El link con la web de la UPNA deportes
         String inicioSesion = "https://extuniv.unavarra.es/actividades/login";
-        String reserva = "https://extuniv.unavarra.es/actividades/reservas/actividades";
+        String reservaActividades = "https://extuniv.unavarra.es/actividades/reservas/actividades";
 
         miVisorWeb = (WebView) findViewById(R.id.visorWeb);
         miVisorWeb.getSettings().setJavaScriptEnabled(true);
@@ -58,14 +59,38 @@ public class InicioSesionWebActivity extends Activity {
 
                 if(url.equals("https://extuniv.unavarra.es/actividades/")){
                     // Si ya estamos logeados entonces vamos a la lista de actividades
-                    miVisorWeb.loadUrl(reserva);
+                    miVisorWeb.loadUrl(reservaActividades);
                 }
 
                 if(url.equals("https://extuniv.unavarra.es/actividades/reservas/actividades")){
-                    // Si ya estamos en la lista de activiades entonces ir a la actividad que queriamos reservar
-                    String javaScript = "javascript:RPCv2.selectorpago('"+codigoActividad+"','"+fechaActividad+"','"+horaActividad+"', '"+nombreActividad+"', '"+centroActividad+"', '', '"+nomProfActividad+"', '"+recursoActividad+"')";
-                    System.out.println(javaScript);
-                    miVisorWeb.evaluateJavascript(javaScript, null);
+                    String getHTMLjs = "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();";
+                    miVisorWeb.evaluateJavascript(getHTMLjs, new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String html) {
+                            if(html.contains("Reserva de Plazas en las Actividades")){
+                                System.out.println("ESTAMOS EN LA LISTA DE ACTIVIDADES!!!!!!!!!!!!!!");
+                                String javaScript = "javascript:RPCv2.selectorpago('"+codigoActividad+"','"+fechaActividad+"','"+horaActividad+"', '"+nombreActividad+"', '"+centroActividad+"', '', '"+nomProfActividad+"', '"+recursoActividad+"')";
+                                System.out.println(javaScript);
+                                miVisorWeb.evaluateJavascript(javaScript, null);
+                            }
+                            if(html.contains("ERROR")){
+                                System.out.println("NO SE PUEDE EJECUTAR LA RESERVA!!!!!!!!!!!");
+                                return;
+                            }
+                            if(html.contains("Confirmar Reserva")){
+                                System.out.println("ESTAMOS A PUNTO DE RESERVAR UNA ACTIVIDAD!!!!!!!!!!!");
+                                String javaScript = "javascript:enlaceProceso('PasarelaZero')";
+                                System.out.println(javaScript);
+                                miVisorWeb.evaluateJavascript(javaScript, null);
+                            }
+
+                            if(html.contains("Proceso realizado con éxito")){
+                                System.out.println("ACABAMOS DE RESERVAR UNA ACTIVIDAD!!!!!!!!!!!");
+                                finish();
+
+                            }
+                        }
+                    });
                 }
             }
         });
