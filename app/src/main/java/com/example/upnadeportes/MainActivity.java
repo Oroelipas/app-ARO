@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String json = response.body().string();
+                    System.out.println("JSON pedido");
+                    System.out.println(json);
                     jsonDisponibilidades = new JsonDisponibilidades(json);
                 } catch (IOException e) {
                     e.printStackTrace();
