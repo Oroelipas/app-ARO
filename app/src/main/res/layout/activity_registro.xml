@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_registro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".registro.RegistroActivity">
+
+    <EditText
+        android:id="@+id/registro_nombre_completo"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:autofillHints=""
+        android:hint="@string/prompt_nombre_completo"
+        android:inputType="textPersonName"
+        tools:targetApi="o" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/registro_email"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/prompt_email_registro"
+        android:inputType="textEmailAddress"
+        tools:targetApi="o" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <Spinner
+        android:id="@+id/registro_carrera"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:prompt="@string/prompt_carrera" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/registro_fecha_nacimiento"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:clickable="true"
+        android:editable="true"
+        android:focusable="false"
+        android:hint="@string/prompt_fecha_nacimineto"
+        android:inputType="date"
+        tools:targetApi="o" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/registro_password1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        tools:targetApi="o" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <EditText
+        android:id="@+id/registro_password2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/prompt_password_repetir"
+        android:inputType="textPassword"
+        tools:targetApi="o" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="85dp"
+        android:layout_marginRight="85dp"
+        android:text="Seleccione un sexo:"
+        android:textColor="@android:color/black" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupGenero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_hombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="Masculino" />
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/radio_mujer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="Femenino" />
+        </LinearLayout>
+
+    </RadioGroup>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <Button
+        android:id="@+id/registro_register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:width="@android:dimen/thumbnail_width"
+        android:background="@color/colorPrimaryDark"
+        android:enabled="false"
+        android:text="@string/action_register" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+
+    <ProgressBar
+        android:id="@+id/loading_registro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:visibility="gone" />
+
+</LinearLayout>

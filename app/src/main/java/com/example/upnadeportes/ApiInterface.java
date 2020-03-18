@@ -16,4 +16,7 @@ public interface ApiInterface {
     Call<ResponseBody> getActividades(
             @Field("fechaInicio") String fecha
     );
+
+    @GET("api/carreras")
+    Call<ResponseBody> getCarreras();
 }
