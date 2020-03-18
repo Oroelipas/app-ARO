@@ -2,4 +2,32 @@
     <string name="app_name">UPNA Deportes</string>
     <string name="title_activity_main">UPNA Deportes</string>
     <string name="title_web_view">Visor Web</string>
+
+    <!-- Strings relacionados con LoginActivity y RegistroActivity -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_carrera">Selecciona una carrera</string>
+    <string name="prompt_nombre_completo">Nombre completo</string>
+    <string name="prompt_fecha_nacimineto">Fecha de nacimiento</string>
+    <string name="prompt_email_registro">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="prompt_password_repetir">Vuelva a introducir la contraseña</string>
+    <string name="action_log_in">Log in</string>
+    <string name="action_register">Registrar</string>
+    <string name="mensajeNoRegistrado">¿No estás registrado? ¡Regístrate ahora!</string>
+    <string name="welcome">¡Bienvenido de nuevo! "</string>
+    <string name="invalid_username">Usuario inválido</string>
+    <string name="invalid_password">La contraseña debe tener >5 caracteres</string>
+    <string name="invalid_password_registro">Las contraseñas no coinciden</string>
+    <string name="invalid_fecha_nacimiento_registro">Fecha inválida</string>
+    <string name="invalid_carrera_registro">Es obligatorio seleccionar una carrera</string>
+    <string name="invalid_email">Email inválido</string>
+    <string name="invalid_sex_registro">Es obligatorio seleccionar un sexo</string>
+    <string name="invalid_nombre_completo">Nombre completo inválido</string>
+    <string name="login_failed">"Login incorrecto"</string>
+    <string name="register_failed">"Registro incorrecto"</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+
 </resources>

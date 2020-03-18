@@ -63,7 +63,6 @@ public class InicioSesionWebActivity extends Activity {
                 }
 
                 if(url.equals("https://extuniv.unavarra.es/actividades/reservas/actividades")){
-<<<<<<< HEAD
                     // Si ya estamos en la lista de activiades entonces ir a la actividad que queriamos reservar
                     String javaScript = "javascript:RPCv2.selectorpago('"+codigoActividad+"','"+fechaActividad+"','"+horaActividad+"', '"+nombreActividad+"', '"+centroActividad+"', '', '"+nomProfActividad+"', '"+recursoActividad+"')";
                     //String javaScript = "javascript:RPCv2.selectorpago('2677','2020-03-13','18:00:00', 'FUNCIONAL', 'DEPORTES', '', 'LEYRE', 'SALA 1')";
@@ -80,7 +79,6 @@ public class InicioSesionWebActivity extends Activity {
                         }
                     });
 
-=======
                     String getHTMLjs = "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();";
                     miVisorWeb.evaluateJavascript(getHTMLjs, new ValueCallback<String>() {
                         @Override
@@ -109,7 +107,6 @@ public class InicioSesionWebActivity extends Activity {
                             }
                         }
                     });
->>>>>>> 5b44bea7e88072177643830477bae6b2b543e7a9
                 }
             }
         });
