@@ -11,7 +11,8 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @FormUrlEncoded
-    @POST("actividades/ajax/TInnova_v2/ReservaClasesPuntuales_Selector/llamadaAjax/solicitaDisponibilidad")
+    //@POST("actividades/ajax/TInnova_v2/ReservaClasesPuntuales_Selector/llamadaAjax/solicitaDisponibilidad")
+    @POST("web-aro/api/actividades")
     Call<ResponseBody> getActividades(
             @Field("fechaInicio") String fecha
     );

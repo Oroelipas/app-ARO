@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     public void irWebView(View view) throws JSONException {
         Intent intent = new Intent(getApplicationContext(), InicioSesionWebActivity.class);
 
-        int codigoActividad = 2677;
-        String fechaActividad = "2020-03-13";
+        int codigoActividad = 1234;
+        String fechaActividad = "2020-02-03";
         String horaActividad = "18:00:00";
 
         JSONObject disponibilidad = jsonDisponibilidades.getDisponibilidad(codigoActividad, fechaActividad, horaActividad);

@@ -4,8 +4,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    public static final String UPNA_URL="https://extuniv.unavarra.es";
-    public static final String AWS_URL="http://ec2-13-59-175-191.us-east-2.compute.amazonaws.com/";
+    //public static final String UPNA_URL="https://extuniv.unavarra.es";
+    public static final String UPNA_URL="https://upnadepor.me";
+    public static final String AWS_URL="https://upnadepor.me";
     private static ApiClient myInstance;
     private Retrofit retrofitUpna;
     private Retrofit retrofitAws;

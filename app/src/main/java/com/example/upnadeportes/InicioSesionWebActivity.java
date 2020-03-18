@@ -42,6 +42,8 @@ public class InicioSesionWebActivity extends Activity {
         nomProfActividad = extras.getString("nomProfActividad");
         recursoActividad = extras.getString("recursoActividad");
 
+        String javaScript = "javascript:RPCv2.selectorpago('"+codigoActividad+"','"+fechaActividad+"','"+horaActividad+"', '"+nombreActividad+"', '"+centroActividad+"', '', '"+nomProfActividad+"', '"+recursoActividad+"')";
+        System.out.println(javaScript);
 
 
         // El link con la web de la UPNA deportes
@@ -63,25 +65,7 @@ public class InicioSesionWebActivity extends Activity {
                 }
 
                 if(url.equals("https://extuniv.unavarra.es/actividades/reservas/actividades")){
-<<<<<<< HEAD
-                    // Si ya estamos en la lista de activiades entonces ir a la actividad que queriamos reservar
-                    String javaScript = "javascript:RPCv2.selectorpago('"+codigoActividad+"','"+fechaActividad+"','"+horaActividad+"', '"+nombreActividad+"', '"+centroActividad+"', '', '"+nomProfActividad+"', '"+recursoActividad+"')";
-                    //String javaScript = "javascript:RPCv2.selectorpago('2677','2020-03-13','18:00:00', 'FUNCIONAL', 'DEPORTES', '', 'LEYRE', 'SALA 1')";
-                    System.out.println(javaScript);
-                    miVisorWeb.evaluateJavascript(javaScript, new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String s) {
-                            System.out.println("String devuelta: " + s);
-                            String scriptReserva = "javascript:enlaceProceso('PasarelaZero')";
-                            miVisorWeb.evaluateJavascript(scriptReserva, null);
-                            System.out.println("Reservado");
-                            miVisorWeb.destroy();
-                            finish();
-                        }
-                    });
-
-=======
-                    String getHTMLjs = "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();";
+                    String getHTMLjs = "javascript: document.getElementsByTagName('html')[0].innerHTML)";
                     miVisorWeb.evaluateJavascript(getHTMLjs, new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String html) {
@@ -109,12 +93,11 @@ public class InicioSesionWebActivity extends Activity {
                             }
                         }
                     });
->>>>>>> 5b44bea7e88072177643830477bae6b2b543e7a9
                 }
             }
         });
 
-        miVisorWeb.loadUrl(inicioSesion);
+        ///////////////////miVisorWeb.loadUrl(inicioSesion);
 
     }
 
