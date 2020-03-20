@@ -36,13 +36,15 @@
 
         <activity
             android:name=".InicioSesionWebActivity"
-            android:label="@string/title_web_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_web_view"></activity>
 
         <activity
             android:name=".ReservaPlazaActivity"
-            android:label="@string/title_web_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_web_view"></activity>
+
+        <activity
+            android:name=".tabbed.ActividadesActivity"
+            android:label="@string/app_name"></activity>
 
     </application>
 

@@ -1,6 +1,6 @@
 package com.example.upnadeportes.registro;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Validación de datos del formulario de registro.

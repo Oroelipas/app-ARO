@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -142,9 +143,10 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:width="@android:dimen/thumbnail_width"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:enabled="false"
-        android:text="@string/action_register" />
+        android:text="@string/action_register"
+        android:textColor="#FFFFFF" />
 
     <Space
         android:layout_width="match_parent"

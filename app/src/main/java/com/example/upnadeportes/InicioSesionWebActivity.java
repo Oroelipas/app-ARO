@@ -2,16 +2,14 @@ package com.example.upnadeportes;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.RequiresApi;
 
 public class InicioSesionWebActivity extends Activity {
 
@@ -105,5 +103,6 @@ public class InicioSesionWebActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(), ReservaPlazaActivity.class);
         startActivity(intent);
     }
+
 
 }

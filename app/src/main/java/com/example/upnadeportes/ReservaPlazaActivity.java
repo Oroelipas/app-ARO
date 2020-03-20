@@ -3,14 +3,10 @@ package com.example.upnadeportes;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.webkit.ConsoleMessage;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.RequiresApi;
 
 public class ReservaPlazaActivity extends Activity {
     WebView miVisorWeb;

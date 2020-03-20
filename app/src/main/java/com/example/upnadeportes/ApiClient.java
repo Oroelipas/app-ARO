@@ -35,7 +35,7 @@ public class ApiClient {
         return  retrofitUpna.create(ApiInterface.class);
     }
     public  ApiInterface getAwsApi(){
-        return  retrofitAws.create(ApiInterface.class);
+         return   retrofitAws.create(ApiInterface.class);
     }
 
 }

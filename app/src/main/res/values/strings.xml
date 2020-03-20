@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">UPNA Deportes</string>
-    <string name="title_activity_main">UPNA Deportes</string>
+    <string name="app_name">UpnaDepor</string>
+    <string name="title_activity_main">UpnaDepor</string>
     <string name="title_web_view">Visor Web</string>
+
+    <!-- String relacionados con el TabbedActivity -->
+    <string name="tab_text_1">Lunes</string>
+    <string name="tab_text_2">Martes</string>
+    <string name="tab_text_3">Miércoles</string>
+    <string name="tab_text_4">Jueves</string>
+    <string name="tab_text_5">Viernes</string>
 
     <!-- Strings relacionados con LoginActivity y RegistroActivity -->
     <string name="prompt_email">Email</string>
@@ -29,5 +36,8 @@
     <string name="title_activity_login">Sign in</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="hora">hora</string>
+    <string name="actividad">actividad</string>
+
 
 </resources>

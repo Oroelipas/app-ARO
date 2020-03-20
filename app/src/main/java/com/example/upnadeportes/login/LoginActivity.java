@@ -1,13 +1,8 @@
 package com.example.upnadeportes.login;
 
 import android.app.Activity;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -20,8 +15,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.upnadeportes.R;
 import com.example.upnadeportes.registro.RegistroActivity;
+import com.example.upnadeportes.tabbed.ActividadesActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -141,4 +143,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegistroActivity.class);
         startActivity(intent);
     }
+
+    public void saltarATabbed(View view) {
+        Intent intent = new Intent(getApplicationContext(), ActividadesActivity.class);
+        startActivity(intent);
+    }
+
+
 }
