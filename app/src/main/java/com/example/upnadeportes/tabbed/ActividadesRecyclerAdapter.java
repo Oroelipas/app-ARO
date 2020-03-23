@@ -1,5 +1,7 @@
 package com.example.upnadeportes.tabbed;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
     protected View.OnClickListener onClickListener;
     private ArrayList<Actividad> actividades;
 
+
     public static class ActividadesViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewNombreActividad;
         public TextView textViewHora;
@@ -26,6 +29,7 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
             this.textViewNombreActividad = v.findViewById(R.id.nombre_actividad);
             this.textViewHora = v.findViewById(R.id.hora_actividad);
         }
+
 
     }
 
@@ -37,8 +41,8 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
     public ActividadesViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         // Crea una nueva view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_actividad_recycler, parent, false);
-        v.setOnClickListener(onClickListener);
         ActividadesViewHolder vh = new ActividadesViewHolder(v);
+
         return vh;
     }
 
@@ -50,10 +54,57 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
         textView_nombreActividad.setText(actividades.get(position).getNombre());
         String hora = actividades.get(position).getHoraInicio().substring(0, 5) + " - " + actividades.get(position).getHoraFin().substring(0, 5);
         textView_hora.setText(hora);
+
+        // Creamos un clickListener e implementamos su acción
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Actividad actividad = actividades.get(position);
+                System.out.println(actividad);
+                reservaDialog(view, actividad);
+
+
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return actividades.size();
     }
+
+    public void setOnItemClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    public void reservaDialog(View view, Actividad actividad) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
+        builder.setTitle(R.string.tituloDialog);
+
+        String datosActividad = "Actividad: " + actividad.getNombre() + "\n";
+        datosActividad += "Fecha: " + actividad.getFecha() + "\n";
+        datosActividad += "Hora: " + actividad.getHoraInicio().substring(0, 5) + " - " + actividad.getHoraFin().substring(0, 5) + "\n\n";
+        datosActividad += "¿Seguro que quieres reservar una plaza para esta actividad?";
+
+        builder.setMessage(datosActividad);
+
+        builder.setPositiveButton(R.string.siDialog, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.out.println("Actividad reservada");
+            }
+        });
+
+        builder.setNegativeButton(R.string.noDialog, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.out.println("Actividad rechazada");
+            }
+        });
+
+        builder.create().show();
+    }
+
+
 }

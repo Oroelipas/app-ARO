@@ -23,16 +23,19 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             R.string.tab_text_3, R.string.tab_text_4, R.string.tab_text_5};
     private final Context mContext;
 
+
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
 
+
     /**
-     * Llama al fragmento del que queremos obtener la información.
+     * Llama a la creación del fragmento del que queremos obtener la información.
      * */
     @Override
     public Fragment getItem(int position) {
+
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         // Llama al fragmento correspondiente, el cual tiene la información de la siguiente
@@ -57,4 +60,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // Show 5 total pages.
         return 5;
     }
+
+
+
 }

@@ -69,6 +69,7 @@ public class PlaceholderFragment extends Fragment {
         // en otra que tenga un índice distinto devuelve otro día de actividades
         pageViewModel.setIndex(index);
 
+
         // Ponemos aquí un switch con lo índices y la carga de las actividades
         switch (index) {
             case 1:
@@ -145,6 +146,7 @@ public class PlaceholderFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
+
         return root;
     }
 
@@ -154,6 +156,7 @@ public class PlaceholderFragment extends Fragment {
         this.actividadesDia.addAll(actividades);
         this.adapter.notifyDataSetChanged();
     }
+
 
 
 }

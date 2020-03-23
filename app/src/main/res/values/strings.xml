@@ -39,5 +39,11 @@
     <string name="hora">hora</string>
     <string name="actividad">actividad</string>
 
+    <!-- Strings de AlertDialog para llamar a la reserva del WebView -->
+    <string name="tituloDialog">Reservar</string>
+    <string name="preguntaDialog">¿Seguro que quiere reservar la actividad?</string>
+    <string name="siDialog">Sí</string>
+    <string name="noDialog">No</string>
+
 
 </resources>

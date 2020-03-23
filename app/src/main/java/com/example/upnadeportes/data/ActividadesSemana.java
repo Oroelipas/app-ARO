@@ -1,22 +1,13 @@
 package com.example.upnadeportes.data;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
-
-import com.example.upnadeportes.ApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ActividadesSemana {
 
@@ -33,13 +24,26 @@ public class ActividadesSemana {
 
     public static ActividadesSemana getInstance() {
         if (miInstancia == null)
-            miInstancia = new ActividadesSemana("");
+            miInstancia = new ActividadesSemana();
         return miInstancia;
     }
 
-    @SuppressLint("WrongViewCast")
-    private ActividadesSemana(String fecha) {
+    public void init(String jsonRecibido) {
         // Nosostros por ahora la fecha no la vamos a comprobar, ya que solo queremos que nos devuelva esa fecha
+        try {
+            this.json = new JSONObject(jsonRecibido);
+            cargarActividades();
+            cargarMonitores();
+            cargarRecursos();
+            cargarCentros();
+            cargarActividadesSemana();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("WrongViewCast")
+    private ActividadesSemana() {
         actividadesDias = new ArrayList[5];
         actividades = new HashMap<>();
         monitores = new HashMap<>();
@@ -49,48 +53,6 @@ public class ActividadesSemana {
         for (int i = 0; i < actividadesDias.length; i++) {
             actividadesDias[i] = new ArrayList<>();
         }
-
-        Call<ResponseBody> call = ApiClient.getInstance().getUpnaApi().getActividades("2020-03-09");
-
-        /*Call<ResponseBody> call = ApiClient.getInstance().getUpnaApi().getActividades("2020-03-09");
-
-        try {
-            Response<ResponseBody> response = call.execute();
-            System.out.println("Adiosssss!!! " + response.body().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-        //Call<ResponseBody> call = ApiClient.getInstance().getUpnaApi().getActividades("2020-03-09");
-        //call = ApiClient.getInstance().getUpnaApi().getActividades("2020-03-09");
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String jsonRecibido = response.body().string();
-                    try {
-                        json = new JSONObject(jsonRecibido);
-                        Log.d(tag, "JSON recibido correctamente");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    // Creamos el mapa de id actividad -> nombre actividad
-                    cargarActividades();
-                    cargarMonitores();
-                    cargarRecursos();
-                    cargarCentros();
-                    cargarActividadesSemana();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                //Toast.makeText(ActividadesSemana.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d(tag, "Error al recibir el JSON");
-            }
-        });
 
     }
 

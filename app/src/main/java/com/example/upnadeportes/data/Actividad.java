@@ -45,4 +45,10 @@ public class Actividad implements Serializable {
 
     public int getPlazasLibres() { return this.plazasLibres; }
 
+    public String toString() {
+        String s = "Id Actividad: " + getIdActividad() + ", nombre: " + getNombre();
+        s  = s + ", fecha: " + getFecha() + ", hora: " + getHoraInicio() + "-" + getHoraFin();
+        return s;
+    }
+
 }
