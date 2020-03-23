@@ -22,8 +22,14 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
+    public int login(String email, String password) {
+        // Se realiza la operación de login de usuario
+        System.out.println("email: " + email);
+        System.out.println("password: " + password);
 
+        /* La petición de login debe ser síncrona (nos quedamos esperando a que el login se complete correctamente antes de dejarle hacer nada al usuario) */
+
+        return -1;
     }
 
     /* Realizamos comprobaciones de validez de los campos del formulario de login */
@@ -31,7 +37,7 @@ public class LoginViewModel extends ViewModel {
         if (!isUserNameValid(username)) {
             loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
         } else if (!isPasswordValid(password)) {
-            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
+            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password_length));
         } else {
             loginFormState.setValue(new LoginFormState(true));
         }
