@@ -22,7 +22,6 @@
     <string name="action_register">Registrar</string>
     <string name="mensajeNoRegistrado">¿No estás registrado? ¡Regístrate ahora!</string>
     <string name="welcome">¡Bienvenido de nuevo! "</string>
-    <string name="email_already_exists">Email no disponible</string>
     <string name="invalid_password_length">La contraseña debe tener >5 caracteres</string>
     <string name="invalid_password_length_registro">Las contraseñas deben tener >5 caracteres</string>
     <string name="invalid_password_equality">Las contraseñas no coinciden</string>

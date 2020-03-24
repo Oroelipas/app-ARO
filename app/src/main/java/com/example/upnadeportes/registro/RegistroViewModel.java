@@ -42,8 +42,6 @@ public class RegistroViewModel extends ViewModel {
 
     public void registrar(String nombreCompleto, String email, String password, String idCarrera, String fechaNacimiento, String sexo) {
 
-        System.out.println("Fecha de nacimiento: " + fechaNacimiento);
-
         Call<ResponseBody> call = ApiClient.getInstance().getAwsApi().postNuevoUsuario(nombreCompleto, email, idCarrera, password, fechaNacimiento, sexo);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -51,27 +49,28 @@ public class RegistroViewModel extends ViewModel {
                 try {
                     String json = response.body().string();
                     JSONObject jsonRespuesta;
-                    System.out.println(json);
                     jsonRespuesta = new JSONObject(json);
-                    if (jsonRespuesta.getInt("error") == 409) {
-                        Log.v(TAG,"Registro incorrecto: 409");
-                        registroResult.setValue(new RegistroResult(R.string.register_failed));
-                    } else {
+                    if (jsonRespuesta.getString("error").equals("null")) {
                         Log.v(TAG,"Registro correcto");
-                         String userId = (String) jsonRespuesta.get("userId");
-                         registroResult.setValue(new RegistroResult(new LoggedInUserView(nombreCompleto, userId, email)));
+                        String IdUser = (String) jsonRespuesta.get("IdUser");
+                        registroResult.setValue(new RegistroResult(new LoggedInUserView(nombreCompleto, IdUser, email)));
+                    } else {
+                        if (jsonRespuesta.getInt("error") == 409) {
+                            Log.v(TAG, "Registro incorrecto: 409");
+                            registroResult.setValue(new RegistroResult(409));
+                        }
                     }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                     Log.v(TAG,"Error procesando la respuesta a la petición");
-                    registroResult.setValue(new RegistroResult(R.string.register_failed));
+                    registroResult.setValue(new RegistroResult(404));
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG,"Error realizando la petición de registro");
-                registroResult.setValue(new RegistroResult(R.string.register_failed));
+                registroResult.setValue(new RegistroResult(404));
             }
         });
 

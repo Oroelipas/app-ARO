@@ -23,17 +23,17 @@ public interface ApiInterface {
     @POST("web-aro/api/login")
     Call<ResponseBody> postLogin(
             @Field("email") String email,
-            @Field("password") String password
+            @Field("hash") String hash
     );
 
     @FormUrlEncoded
     @POST("web-aro/api/nuevousuario")
     Call<ResponseBody> postNuevoUsuario(
-            @Field("nombreCompleto") String nombreCompleto,
+            @Field("nombre") String nombre,
             @Field("email") String email,
             @Field("idCarrera") String idCarrera,
-            @Field("password") String password,
-            @Field("fechaNacimiento") String fechaNacimiento,
+            @Field("hash") String hash,
+            @Field("fNacimiento") String fNacimiento,
             @Field("sexo") String sexo
     );
 

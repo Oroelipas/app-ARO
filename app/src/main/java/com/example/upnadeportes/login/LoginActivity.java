@@ -68,13 +68,15 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.GONE);
 
                 if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                    // Si el login falla, volvemos a él otra vez
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    if (loginResult.getError() == 404) {
+                        showLoginFailed(R.string.login_failed);
+                        // Si el login falla, volvemos a él otra vez
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    updateUiWithUser();
                     // Login completado correctamente (iremos a la actividad principal)
                 }
                 setResult(Activity.RESULT_OK);
@@ -123,8 +125,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + " " + model.getDisplayName();
+    private void updateUiWithUser() {
+        String welcome = getString(R.string.welcome);
         Toast toast = Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();

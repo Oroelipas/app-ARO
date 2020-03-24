@@ -49,24 +49,26 @@ public class LoginViewModel extends ViewModel {
                     String json = response.body().string();
                     JSONObject jsonRespuesta;
                     jsonRespuesta = new JSONObject(json);
-                    if (jsonRespuesta.getInt("error") == 404) {
-                        Log.v(TAG,"Login incorrecto: 404");
-                        loginResult.setValue(new LoginResult(R.string.login_failed));
+                    if (jsonRespuesta.getString("error").equals("null")) {
+                        String IdUser =  ((Integer) jsonRespuesta.get("IdUser")).toString();
+                        Log.v(TAG,"Login correcto, userId: " + IdUser);
+                        loginResult.setValue(new LoginResult(new LoggedInUserView(null, IdUser, email)));
                     } else {
-                        String userId = (String) jsonRespuesta.get("userId");
-                        Log.v(TAG,"Login correcto, userId: " + userId);
-                        loginResult.setValue(new LoginResult(new LoggedInUserView(null, userId, email)));
+                        if (jsonRespuesta.getInt("error") == 404) {
+                            Log.v(TAG, "Login incorrecto: 404");
+                            loginResult.setValue(new LoginResult(404));
+                        }
                     }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                     Log.v(TAG,"Error procesando la respuesta a la petición");
-                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                    loginResult.setValue(new LoginResult(404));
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG,"Error realizando la petición de login");
-                loginResult.setValue(new LoginResult(R.string.login_failed));
+                loginResult.setValue(new LoginResult(404));
             }
         });
 
@@ -90,9 +92,8 @@ public class LoginViewModel extends ViewModel {
         }
         if (username.contains("@")) {
             return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
         }
+        return false;
     }
 
     /* Comprobación de validez de la contraseña */

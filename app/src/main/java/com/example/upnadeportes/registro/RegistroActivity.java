@@ -155,8 +155,11 @@ public class RegistroActivity extends AppCompatActivity {
 
             if (registroResult.getError() != null) {
                 // El registro ha fallado
-                showRegistroFailed(registroResult.getError());
-                // Vemos qué tipo de error ha tenido lugar
+                if (registroResult.getError() == 409) {
+                    emailEditText.setError("Email no disponible");
+                } else {
+                    showRegistroFailed(R.string.register_failed);
+                }
             } else {
                 // El registro ha sido exitoso
                 Toast toast = Toast.makeText(getApplicationContext(), "Registro OK", Toast.LENGTH_SHORT);
@@ -164,8 +167,6 @@ public class RegistroActivity extends AppCompatActivity {
                 toast.show();
             }
             setResult(Activity.RESULT_OK);
-
-            finish();
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -201,9 +202,9 @@ public class RegistroActivity extends AppCompatActivity {
 
             String sexo;
             if (radio_mujer.isChecked())
-                sexo = "Femenino";
+                sexo = "femenino";
             else
-                sexo = "Masculino";
+                sexo = "masculino";
 
             registroViewModel.registrar(nombreCompletoEditText.getText().toString(),
                     emailEditText.getText().toString(),
@@ -281,7 +282,8 @@ public class RegistroActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, day);
             Date dt = calendar.getTime();
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            // java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
             fechaSeleccionada = sdf.format(dt);
 
             // +1 because January is zero
