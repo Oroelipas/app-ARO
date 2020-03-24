@@ -17,6 +17,8 @@ import java.util.List;
  * */
 public class PageViewModel extends ViewModel {
 
+    public static String tag = "PageViewModel";
+
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
     private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
@@ -68,6 +70,15 @@ public class PageViewModel extends ViewModel {
             viernes = new MutableLiveData<>();
         viernes.setValue(actividadesSemana.getViernes());
         return viernes;
+    }
+
+
+    public void actualizarActividades() {
+        lunes.setValue(actividadesSemana.getLunes());
+        martes.setValue(actividadesSemana.getMartes());
+        miercoles.setValue(actividadesSemana.getMiercoles());
+        jueves.setValue(actividadesSemana.getJueves());
+        viernes.setValue(actividadesSemana.getViernes());
     }
 
 
