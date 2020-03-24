@@ -60,23 +60,22 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
+
                 if (loginResult == null) {
                     return;
                 }
+
                 loadingProgressBar.setVisibility(View.GONE);
+
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
-
                     // Si el login falla, volvemos a él otra vez
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-
                     // Login completado correctamente (iremos a la actividad principal)
-
-
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -118,16 +117,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                int resultadoLogin = loginViewModel.login(usernameEditText.getText().toString(),
+                loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
-                if (resultadoLogin > 0) {
-                    // Login correcto, el id del usuario está en resultadoLogin
-                } else {
-                    // Login incorrecto, ha habido algún fallo (email o contraseña incorrectos, o problema en la conexión)
-                    Toast toast = Toast.makeText(getApplicationContext(), "Login incorrecto", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, 0);
-                    toast.show();
-                }
             }
         });
     }

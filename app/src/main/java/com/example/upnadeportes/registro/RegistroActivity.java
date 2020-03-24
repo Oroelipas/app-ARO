@@ -7,6 +7,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +29,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +44,13 @@ import retrofit2.Response;
 
 public class RegistroActivity extends AppCompatActivity {
 
+    private final String TAG = this.getClass().getName();
     private RegistroViewModel registroViewModel;
     private Map<String, Integer> carreras = new LinkedHashMap<>();
     private List<String> listaCarreras = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private String carrera = "";
+    private String fechaSeleccionada = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,9 +156,12 @@ public class RegistroActivity extends AppCompatActivity {
             if (registroResult.getError() != null) {
                 // El registro ha fallado
                 showRegistroFailed(registroResult.getError());
+                // Vemos qué tipo de error ha tenido lugar
             } else {
                 // El registro ha sido exitoso
-
+                Toast toast = Toast.makeText(getApplicationContext(), "Registro OK", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.show();
             }
             setResult(Activity.RESULT_OK);
 
@@ -197,20 +205,12 @@ public class RegistroActivity extends AppCompatActivity {
             else
                 sexo = "Masculino";
 
-            int resultadoRegistro = registroViewModel.registrar(nombreCompletoEditText.getText().toString(),
+            registroViewModel.registrar(nombreCompletoEditText.getText().toString(),
                     emailEditText.getText().toString(),
                     password_1_EditText.getText().toString(),
                     carreras.get(carrera).toString(),
-                    fechaNacimientoEditText.getText().toString(),
+                    fechaSeleccionada,
                     sexo);
-            if (resultadoRegistro > 0) {
-                // Registro correcto, el id del usuario está en resultadoRegistro
-            } else {
-                // Registro incorrecto, ha habido algún fallo (email no válido o problema en la conexión)
-                Toast toast = Toast.makeText(getApplicationContext(), "Registro incorrecto", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 0, 0);
-                toast.show();
-            }
         });
     }
 
@@ -277,6 +277,13 @@ public class RegistroActivity extends AppCompatActivity {
         final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
 
         DatePickerFragment newFragment = DatePickerFragment.newInstance((datePicker, year, month, day) -> {
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month, day);
+            Date dt = calendar.getTime();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            fechaSeleccionada = sdf.format(dt);
+
             // +1 because January is zero
             final String selectedDate = day + " / " + (month+1) + " / " + year;
             fechaNacimientoEditText.setText(selectedDate);
@@ -305,7 +312,8 @@ public class RegistroActivity extends AppCompatActivity {
                         jsonCarreras = new JSONArray(json);
                         poblarSpinnerCarreras(jsonCarreras);
                     } catch (JSONException e) {
-                        System.out.println("Error leyendo JSON de carreras");
+                        e.printStackTrace();
+                        Log.v(TAG,"Error leyendo JSON de carreras");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -325,14 +333,15 @@ public class RegistroActivity extends AppCompatActivity {
             try {
                 objeto = jsonCarreras.getJSONObject(i);
             } catch (JSONException e) {
-                System.out.println("Carrera leída incorrectamente");
+                e.printStackTrace();
+                Log.v(TAG,"Carrera leída incorrectamente");
                 objeto = null;
             }
             if (objeto != null) {
                 try {
                     carreras.put((String)objeto.get("nombre"), (Integer)objeto.get("idcarrera"));
                 } catch (JSONException e) {
-                    System.out.println("Error almacenando carrera en el mapa");
+                    Log.v(TAG,"Error almacenando carrera en el mapa");
                 }
             }
         }

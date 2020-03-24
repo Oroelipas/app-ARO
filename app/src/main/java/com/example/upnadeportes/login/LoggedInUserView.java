@@ -4,14 +4,23 @@ package com.example.upnadeportes.login;
  * Class exposing authenticated user details to the UI.
  */
 public class LoggedInUserView {
-    private String displayName;
-    //... other data fields that may be accessible to the UI
 
-    public LoggedInUserView(String displayName) {
-        this.displayName = displayName;
+    private String nombreCompleto;
+    private String userId;
+    private String email;
+
+    public LoggedInUserView(String nombreCompleto, String userId, String email) {
+        this.nombreCompleto = nombreCompleto;
+        this.userId = userId;
+        this.email = email;
     }
 
     String getDisplayName() {
-        return displayName;
+        return nombreCompleto;
     }
+
+    String getUserId() { return userId; }
+
+    String getEmail() { return email; }
+
 }

@@ -3,11 +3,14 @@ package com.example.upnadeportes.registro;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
 import com.example.upnadeportes.ApiClient;
 import com.example.upnadeportes.R;
+import com.example.upnadeportes.login.LoggedInUserView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +25,7 @@ import retrofit2.Response;
 
 public class RegistroViewModel extends ViewModel {
 
+    public final String TAG = this.getClass().getName();
     private MutableLiveData<RegistroFormState> registroFormState = new MutableLiveData<>();
     private MutableLiveData<RegistroResult> registroResult = new MutableLiveData<>();
     private Integer passwordErrorCode = 0;
@@ -36,22 +40,41 @@ public class RegistroViewModel extends ViewModel {
         return registroResult;
     }
 
-    public int registrar(String nombreCompleto, String email, String password, String idCarrera, String fechaNacimiento, String sexo) {
-        /* Se realiza la operación de registro de usuario, este método devolverá:
-            -> Un id de usuario > 0 si no hay ningún fallo
-            -> -1 si hay algún fallo
-         */
+    public void registrar(String nombreCompleto, String email, String password, String idCarrera, String fechaNacimiento, String sexo) {
 
-        System.out.println("nombreCompleto: " + nombreCompleto);
-        System.out.println("email: " + email);
-        System.out.println("idCarrera: " + idCarrera);
-        System.out.println("fechaNacimiento: " + fechaNacimiento);
-        System.out.println("password: " + password);
-        System.out.println("sexo: " + sexo);
+        System.out.println("Fecha de nacimiento: " + fechaNacimiento);
 
-        /* La petición de registro debe ser síncrona (nos quedamos esperando a que el registro se complete correctamente antes de dejarle hacer nada al usuario) */
+        Call<ResponseBody> call = ApiClient.getInstance().getAwsApi().postNuevoUsuario(nombreCompleto, email, idCarrera, password, fechaNacimiento, sexo);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String json = response.body().string();
+                    JSONObject jsonRespuesta;
+                    System.out.println(json);
+                    jsonRespuesta = new JSONObject(json);
+                    if (jsonRespuesta.getInt("error") == 409) {
+                        Log.v(TAG,"Registro incorrecto: 409");
+                        registroResult.setValue(new RegistroResult(R.string.register_failed));
+                    } else {
+                        Log.v(TAG,"Registro correcto");
+                         String userId = (String) jsonRespuesta.get("userId");
+                         registroResult.setValue(new RegistroResult(new LoggedInUserView(nombreCompleto, userId, email)));
+                    }
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    Log.v(TAG,"Error procesando la respuesta a la petición");
+                    registroResult.setValue(new RegistroResult(R.string.register_failed));
+                }
+            }
 
-        return -1;
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG,"Error realizando la petición de registro");
+                registroResult.setValue(new RegistroResult(R.string.register_failed));
+            }
+        });
+
     }
 
     public void registroDataChanged(String nombreCompleto, String email, String carrera, String fechaNacimiento, String password1, String password2, boolean sex_hombre, boolean sex_mujer) {

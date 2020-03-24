@@ -3,12 +3,27 @@ package com.example.upnadeportes.login;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import android.util.Log;
 import android.util.Patterns;
 
+import com.example.upnadeportes.ApiClient;
 import com.example.upnadeportes.R;
+import com.example.upnadeportes.registro.RegistroResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginViewModel extends ViewModel {
 
+    private final String TAG = this.getClass().getName();
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
 
@@ -22,20 +37,45 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public int login(String email, String password) {
+    public void login(String email, String password) {
+
         // Se realiza la operación de login de usuario
-        System.out.println("email: " + email);
-        System.out.println("password: " + password);
 
-        /* La petición de login debe ser síncrona (nos quedamos esperando a que el login se complete correctamente antes de dejarle hacer nada al usuario) */
+        Call<ResponseBody> call = ApiClient.getInstance().getAwsApi().postLogin(email, password);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String json = response.body().string();
+                    JSONObject jsonRespuesta;
+                    jsonRespuesta = new JSONObject(json);
+                    if (jsonRespuesta.getInt("error") == 404) {
+                        Log.v(TAG,"Login incorrecto: 404");
+                        loginResult.setValue(new LoginResult(R.string.login_failed));
+                    } else {
+                        String userId = (String) jsonRespuesta.get("userId");
+                        Log.v(TAG,"Login correcto, userId: " + userId);
+                        loginResult.setValue(new LoginResult(new LoggedInUserView(null, userId, email)));
+                    }
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    Log.v(TAG,"Error procesando la respuesta a la petición");
+                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG,"Error realizando la petición de login");
+                loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
+        });
 
-        return -1;
     }
 
     /* Realizamos comprobaciones de validez de los campos del formulario de login */
     public void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
-            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
+            loginFormState.setValue(new LoginFormState(R.string.invalid_email, null));
         } else if (!isPasswordValid(password)) {
             loginFormState.setValue(new LoginFormState(null, R.string.invalid_password_length));
         } else {

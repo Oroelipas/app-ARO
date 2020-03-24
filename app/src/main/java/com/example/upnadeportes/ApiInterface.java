@@ -19,12 +19,14 @@ public interface ApiInterface {
     @GET("api/carreras")
     Call<ResponseBody> getCarreras();
 
+    @FormUrlEncoded
     @POST("web-aro/api/login")
     Call<ResponseBody> postLogin(
             @Field("email") String email,
             @Field("password") String password
     );
 
+    @FormUrlEncoded
     @POST("web-aro/api/nuevousuario")
     Call<ResponseBody> postNuevoUsuario(
             @Field("nombreCompleto") String nombreCompleto,
