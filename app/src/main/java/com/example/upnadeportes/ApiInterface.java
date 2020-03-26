@@ -19,8 +19,7 @@ public interface ApiInterface {
     @GET("api/carreras")
     Call<ResponseBody> getCarreras();
 
-<<<<<<< HEAD
-=======
+
     @FormUrlEncoded
     @POST("web-aro/api/login")
     Call<ResponseBody> postLogin(
@@ -38,6 +37,5 @@ public interface ApiInterface {
             @Field("fNacimiento") String fNacimiento,
             @Field("sexo") String sexo
     );
-
->>>>>>> beaf3a6adca0cd21953ec8ed1a01766a7ee0ccb5
+    
 }
