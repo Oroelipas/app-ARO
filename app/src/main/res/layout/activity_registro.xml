@@ -40,8 +40,7 @@
     <Spinner
         android:id="@+id/registro_carrera"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:prompt="@string/prompt_carrera" />
+        android:layout_height="wrap_content" />
 
     <Space
         android:layout_width="match_parent"

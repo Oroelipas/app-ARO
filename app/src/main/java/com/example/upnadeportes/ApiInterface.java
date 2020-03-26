@@ -19,4 +19,25 @@ public interface ApiInterface {
     @GET("api/carreras")
     Call<ResponseBody> getCarreras();
 
+<<<<<<< HEAD
+=======
+    @FormUrlEncoded
+    @POST("web-aro/api/login")
+    Call<ResponseBody> postLogin(
+            @Field("email") String email,
+            @Field("hash") String hash
+    );
+
+    @FormUrlEncoded
+    @POST("web-aro/api/nuevousuario")
+    Call<ResponseBody> postNuevoUsuario(
+            @Field("nombre") String nombre,
+            @Field("email") String email,
+            @Field("idCarrera") String idCarrera,
+            @Field("hash") String hash,
+            @Field("fNacimiento") String fNacimiento,
+            @Field("sexo") String sexo
+    );
+
+>>>>>>> beaf3a6adca0cd21953ec8ed1a01766a7ee0ccb5
 }

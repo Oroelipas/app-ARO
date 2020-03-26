@@ -1,20 +1,18 @@
 package com.example.upnadeportes.registro;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -29,10 +27,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -41,10 +44,13 @@ import retrofit2.Response;
 
 public class RegistroActivity extends AppCompatActivity {
 
+    private final String TAG = this.getClass().getName();
     private RegistroViewModel registroViewModel;
-    private Map<String, Integer> carreras = new HashMap<>();
+    private Map<String, Integer> carreras = new LinkedHashMap<>();
     private List<String> listaCarreras = new ArrayList<>();
     private ArrayAdapter<String> adapter;
+    private String carrera = "";
+    private String fechaSeleccionada = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,73 +77,96 @@ public class RegistroActivity extends AppCompatActivity {
         // Creamos el adaptador para el contenido del spinner de carreras
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaCarreras);
         carreraSpinner.setAdapter(adapter);
+        carreraSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                carrera = String.valueOf(carreraSpinner.getSelectedItem());
+                registroViewModel.registroDataChanged(
+                        nombreCompletoEditText.getText().toString(),
+                        emailEditText.getText().toString(),
+                        carrera,
+                        fechaNacimientoEditText.getText().toString(),
+                        password_1_EditText.getText().toString(),
+                        password_2_EditText.getText().toString(),
+                        radio_hombre.isChecked(),
+                        radio_mujer.isChecked());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Auto generado
+            }
+        });
 
         // Capturaremos la introduccion de la fecha de nacimiento
-        fechaNacimientoEditText.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               showDatePickerDialog();
-           }
-        });
+        fechaNacimientoEditText.setOnClickListener(v -> showDatePickerDialog());
 
-        registroViewModel.getRegistroFormState().observe(this, new Observer<RegistroFormState>() {
-            @Override
-            public void onChanged(@Nullable RegistroFormState registroFormState) {
-                if (registroFormState == null) {
-                    return;
-                }
-                // Invalidamos el botón de registrar si el estado del formulario es incorrecto
-                registerButton.setEnabled(registroFormState.isDataValid());
+        registroViewModel.getRegistroFormState().observe(this, registroFormState -> {
+            if (registroFormState == null) {
+                return;
+            }
 
-                // Mostramos los errores
-                if (registroFormState.getNombreCompletoError() != null) {
-                   nombreCompletoEditText.setError(getString(registroFormState.getNombreCompletoError()));
-                }
-                if (registroFormState.getEmailError() != null) {
-                    emailEditText.setError(getString(registroFormState.getEmailError()));
-                }
-                if (registroFormState.getCarreraError() != null) {
-                    String errorString = getString(registroFormState.getCarreraError());
-                    Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, 0);
-                    toast.show();
-                }
-                if (registroFormState.getFechaNacimientoError() != null) {
-                    fechaNacimientoEditText.setError(getString(registroFormState.getFechaNacimientoError()));
-                }
-                if (registroFormState.getPasswordError() != null) {
-                    password_1_EditText.setError(getString(registroFormState.getPasswordError()));
-                    password_2_EditText.setError(getString(registroFormState.getPasswordError()));
-                }
-                if (registroFormState.getSexError() != null) {
-                    String errorString = getString(registroFormState.getSexError());
-                    Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, 0);
-                    toast.show();
-                }
+            // Invalidamos el botón de registrar si el estado del formulario es incorrecto
+            registerButton.setEnabled(registroFormState.isDataValid());
+
+            if (registroFormState.isDataValid()) {
+                // Si los datos son válidos no hay errores
+                nombreCompletoEditText.setError(null);
+                emailEditText.setError(null);
+                fechaNacimientoEditText.setError(null);
+                password_1_EditText.setError(null);
+                password_2_EditText.setError(null);
+            }
+
+            // Mostramos los errores
+            if (registroFormState.getNombreCompletoError() != null) {
+               nombreCompletoEditText.setError(getString(registroFormState.getNombreCompletoError()));
+            }
+            if (registroFormState.getEmailError() != null) {
+                emailEditText.setError(getString(registroFormState.getEmailError()));
+            }
+            if (registroFormState.getCarreraError() != null) {
+                String errorString = getString(registroFormState.getCarreraError());
+                Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.show();
+            }
+            if (registroFormState.getFechaNacimientoError() != null) {
+                fechaNacimientoEditText.setError(getString(registroFormState.getFechaNacimientoError()));
+            }
+            if (registroFormState.getPasswordError() != null) {
+                password_1_EditText.setError(getString(registroFormState.getPasswordError()));
+                password_2_EditText.setError(getString(registroFormState.getPasswordError()));
+            }
+            if (registroFormState.getSexError() != null) {
+                String errorString = getString(registroFormState.getSexError());
+                Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.show();
             }
         });
 
-        registroViewModel.getRegistroResult().observe(this, new Observer<RegistroResult>() {
-            @Override
-            public void onChanged(@Nullable RegistroResult registroResult) {
-                if (registroResult == null) {
-                    return;
-                }
+        registroViewModel.getRegistroResult().observe(this, registroResult -> {
+            if (registroResult == null) {
+                return;
+            }
 
-                loadingProgressBar.setVisibility(View.GONE);
+            loadingProgressBar.setVisibility(View.GONE);
 
-                if (registroResult.getError() != null) {
-                    // El registro ha fallado
-                    showRegistroFailed(registroResult.getError());
+            if (registroResult.getError() != null) {
+                // El registro ha fallado
+                if (registroResult.getError() == 409) {
+                    emailEditText.setError("Email no disponible");
                 } else {
-                    // El registro ha sido exitoso
-
+                    showRegistroFailed(R.string.register_failed);
                 }
-                setResult(Activity.RESULT_OK);
-
-                finish();
+            } else {
+                // El registro ha sido exitoso
+                Toast toast = Toast.makeText(getApplicationContext(), "Registro OK", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.show();
             }
+            setResult(Activity.RESULT_OK);
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -156,7 +185,7 @@ public class RegistroActivity extends AppCompatActivity {
                 registroViewModel.registroDataChanged(
                         nombreCompletoEditText.getText().toString(),
                         emailEditText.getText().toString(),
-                        carreraSpinner.toString(),
+                        carrera,
                         fechaNacimientoEditText.getText().toString(),
                         password_1_EditText.getText().toString(),
                         password_2_EditText.getText().toString(),
@@ -169,35 +198,20 @@ public class RegistroActivity extends AppCompatActivity {
         password_1_EditText.addTextChangedListener(afterTextChangedListener);
         password_2_EditText.addTextChangedListener(afterTextChangedListener);
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        registerButton.setOnClickListener(v -> {
 
-                String sexo;
-                final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
-                if (radio_mujer.isChecked())
-                    sexo = "Masculino";
-                else
-                    sexo = "Femenino";
+            String sexo;
+            if (radio_mujer.isChecked())
+                sexo = "femenino";
+            else
+                sexo = "masculino";
 
-                // Ponemos el loading a funcionar
-                loadingProgressBar.setVisibility(View.VISIBLE);
-
-                registroViewModel.registrar(nombreCompletoEditText.getText().toString(),
-                        emailEditText.getText().toString(),
-                        password_1_EditText.getText().toString(),
-                        carreraSpinner.toString(),
-                        fechaNacimientoEditText.getText().toString(),
-                        sexo);
-
-                /* Comprobaremos el resultado de la función de registro, avisaremos
-                    al usuario de posibles fallos
-
-                    emailEditText.setError("Email no disponible");
-
-                 */
-
-            }
+            registroViewModel.registrar(nombreCompletoEditText.getText().toString(),
+                    emailEditText.getText().toString(),
+                    password_1_EditText.getText().toString(),
+                    carreras.get(carrera).toString(),
+                    fechaSeleccionada,
+                    sexo);
         });
     }
 
@@ -211,7 +225,6 @@ public class RegistroActivity extends AppCompatActivity {
 
         final EditText nombreCompletoEditText = findViewById(R.id.registro_nombre_completo);
         final EditText fechaNacimientoEditText = findViewById(R.id.registro_fecha_nacimiento);
-        final Spinner carreraSpinner = findViewById(R.id.registro_carrera);
         final EditText emailEditText = findViewById(R.id.registro_email);
         final EditText password_1_EditText = findViewById(R.id.registro_password1);
         final EditText password_2_EditText = findViewById(R.id.registro_password2);
@@ -227,7 +240,7 @@ public class RegistroActivity extends AppCompatActivity {
                     registroViewModel.registroDataChanged(
                             nombreCompletoEditText.getText().toString(),
                             emailEditText.getText().toString(),
-                            carreraSpinner.toString(),
+                            carrera,
                             fechaNacimientoEditText.getText().toString(),
                             password_1_EditText.getText().toString(),
                             password_2_EditText.getText().toString(),
@@ -243,7 +256,7 @@ public class RegistroActivity extends AppCompatActivity {
                     registroViewModel.registroDataChanged(
                             nombreCompletoEditText.getText().toString(),
                             emailEditText.getText().toString(),
-                            carreraSpinner.toString(),
+                            carrera,
                             fechaNacimientoEditText.getText().toString(),
                             password_1_EditText.getText().toString(),
                             password_2_EditText.getText().toString(),
@@ -256,15 +269,35 @@ public class RegistroActivity extends AppCompatActivity {
 
     public void showDatePickerDialog() {
 
+        final EditText nombreCompletoEditText = findViewById(R.id.registro_nombre_completo);
         final EditText fechaNacimientoEditText = findViewById(R.id.registro_fecha_nacimiento);
+        final EditText emailEditText = findViewById(R.id.registro_email);
+        final EditText password_1_EditText = findViewById(R.id.registro_password1);
+        final EditText password_2_EditText = findViewById(R.id.registro_password2);
+        final RadioButton radio_mujer = findViewById(R.id.radio_mujer);
+        final RadioButton radio_hombre = findViewById(R.id.radio_hombre);
 
-        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 because January is zero
-                final String selectedDate = day + " / " + (month+1) + " / " + year;
-                fechaNacimientoEditText.setText(selectedDate);
-            }
+        DatePickerFragment newFragment = DatePickerFragment.newInstance((datePicker, year, month, day) -> {
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month, day);
+            Date dt = calendar.getTime();
+            // java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            fechaSeleccionada = sdf.format(dt);
+
+            // +1 because January is zero
+            final String selectedDate = day + " / " + (month+1) + " / " + year;
+            fechaNacimientoEditText.setText(selectedDate);
+            registroViewModel.registroDataChanged(
+                    nombreCompletoEditText.getText().toString(),
+                    emailEditText.getText().toString(),
+                    carrera,
+                    fechaNacimientoEditText.getText().toString(),
+                    password_1_EditText.getText().toString(),
+                    password_2_EditText.getText().toString(),
+                    radio_hombre.isChecked(),
+                    radio_mujer.isChecked());
         });
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
@@ -275,15 +308,14 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    System.out.println("Contenido JSON carreras:");
                     String json = response.body().string();
-                    System.out.println(json);
                     JSONArray jsonCarreras;
                     try {
                         jsonCarreras = new JSONArray(json);
                         poblarSpinnerCarreras(jsonCarreras);
                     } catch (JSONException e) {
-                        System.out.println("Error leyendo JSON de carreras");
+                        e.printStackTrace();
+                        Log.v(TAG,"Error leyendo JSON de carreras");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -303,19 +335,22 @@ public class RegistroActivity extends AppCompatActivity {
             try {
                 objeto = jsonCarreras.getJSONObject(i);
             } catch (JSONException e) {
-                System.out.println("Carrera leída incorrectamente");
+                e.printStackTrace();
+                Log.v(TAG,"Carrera leída incorrectamente");
                 objeto = null;
             }
             if (objeto != null) {
                 try {
                     carreras.put((String)objeto.get("nombre"), (Integer)objeto.get("idcarrera"));
                 } catch (JSONException e) {
-                    System.out.println("Error almacenando carrera en el mapa");
+                    Log.v(TAG,"Error almacenando carrera en el mapa");
                 }
             }
         }
-        listaCarreras.addAll(carreras.keySet());
+        listaCarreras.add("Selecciona una carrera");
+        Collection<String> carrerasOrdenadas = new TreeSet<>(Collator.getInstance());
+        carrerasOrdenadas.addAll(carreras.keySet());
+        listaCarreras.addAll(carrerasOrdenadas);
         adapter.notifyDataSetChanged();
     }
-
 }
