@@ -37,5 +37,5 @@ public interface ApiInterface {
             @Field("fNacimiento") String fNacimiento,
             @Field("sexo") String sexo
     );
-    
+
 }
