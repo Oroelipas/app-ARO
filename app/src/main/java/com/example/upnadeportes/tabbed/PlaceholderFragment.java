@@ -57,6 +57,7 @@ public class PlaceholderFragment extends Fragment {
         this.actividadesDia = new ArrayList<>();
 
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
+
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);

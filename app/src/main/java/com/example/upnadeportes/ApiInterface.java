@@ -18,4 +18,5 @@ public interface ApiInterface {
 
     @GET("api/carreras")
     Call<ResponseBody> getCarreras();
+
 }

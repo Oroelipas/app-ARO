@@ -1,10 +1,14 @@
 package com.example.upnadeportes.data;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Actividad implements Serializable {
     private int idActividad;
-    private String fecha;
+    private Date fecha;
     private String horaInicio;
     private String horaFin;
     private String nombre;
@@ -17,7 +21,12 @@ public class Actividad implements Serializable {
                      String nombreActividad, String centro, String nombreMonitor,
                      String recursoActividad, int plazasLibres) {
         this.idActividad = idActividad;
-        this.fecha = fecha;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.fecha = sdf.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.nombre = nombreActividad;
@@ -29,7 +38,7 @@ public class Actividad implements Serializable {
 
     public int getIdActividad() { return this.idActividad; }
 
-    public String getFecha() { return this.fecha; }
+    public Date getFecha() { return this.fecha; }
 
     public String getHoraInicio() { return this.horaInicio; }
 
@@ -44,6 +53,13 @@ public class Actividad implements Serializable {
     public String getRecursoActividad() { return this.recursoActividad; }
 
     public int getPlazasLibres() { return this.plazasLibres; }
+
+    public String getFechaTexto() {
+        Locale espanol = new Locale("es","ES");
+        SimpleDateFormat dia = new SimpleDateFormat("EEEE d MMMM", espanol);
+        String diaActividad = dia.format(this.fecha);
+        return diaActividad;
+    }
 
     public String toString() {
         String s = "Id Actividad: " + getIdActividad() + ", nombre: " + getNombre();

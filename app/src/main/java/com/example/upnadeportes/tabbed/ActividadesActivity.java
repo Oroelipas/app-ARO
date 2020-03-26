@@ -11,6 +11,8 @@ import com.example.upnadeportes.data.ActividadesSemana;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,6 +30,17 @@ public class ActividadesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Seleccionamos la vista principal para que se muestre en la aplicación
         setContentView(R.layout.activity_actividades);
+
+        // Cargamos la fecha
+        Date d = new Date();
+        SimpleDateFormat diaSemanaDate = new SimpleDateFormat("u");
+        // Obtengo el día de la semana y le resto uno porque el índice de la tabbed
+        // va de 0 a 4
+        int diaSemana = Integer.valueOf(diaSemanaDate.format(d)) - 1;
+        System.out.println(diaSemana);
+        if (diaSemana > 4)
+            diaSemana = 1;
+
         // Se crea un adaptador de secciones.
         // Cada sección guardará la información de esa sección.
         // Ese adaptador está en una clase dentro del directorio ui.main
@@ -35,6 +48,7 @@ public class ActividadesActivity extends AppCompatActivity {
 
         // Pedimos el JSON con las actividades de la semana
         Call<ResponseBody> call = ApiClient.getInstance().getUpnaApi().getActividades("2020-03-09");
+        int finalDiaSemana = diaSemana;
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -49,9 +63,15 @@ public class ActividadesActivity extends AppCompatActivity {
                         TabLayout tabs = findViewById(R.id.tabs);
                         // Viculamos las pestañas con el visor de página
                         tabs.setupWithViewPager(viewPager);
+                        // Le comunicamos a la vista la pestaña que queremos ver
+
+                        viewPager.setCurrentItem(finalDiaSemana);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -59,6 +79,8 @@ public class ActividadesActivity extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 

@@ -82,8 +82,7 @@ public class PageViewModel extends ViewModel {
     }
 
 
-    // Este método está para cuando le demos el número de pantalla nos diga que estamos en la pestaña
-    // index
+    // Este método está para cuando le demos el número de pantalla por primera vez
     public void setIndex(int index) {
         mIndex.setValue(index);
     }

@@ -2,6 +2,7 @@ package com.example.upnadeportes.tabbed;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
 
     protected View.OnClickListener onClickListener;
     private ArrayList<Actividad> actividades;
+    static String tag = "ActividadesRecyclerAdapter";
 
 
     public static class ActividadesViewHolder extends RecyclerView.ViewHolder {
@@ -55,12 +57,12 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
         String hora = actividades.get(position).getHoraInicio().substring(0, 5) + " - " + actividades.get(position).getHoraFin().substring(0, 5);
         textView_hora.setText(hora);
 
-        // Creamos un clickListener e implementamos su acción
+        // Creamos un clickListener para la vista del item e implementamos su acción
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Actividad actividad = actividades.get(position);
-                System.out.println(actividad);
+                Log.d(tag, actividad.toString());
                 reservaDialog(view, actividad);
 
 
@@ -82,8 +84,9 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
         builder.setTitle(R.string.tituloDialog);
 
+
         String datosActividad = "Actividad: " + actividad.getNombre() + "\n";
-        datosActividad += "Fecha: " + actividad.getFecha() + "\n";
+        datosActividad += "Fecha: " + actividad.getFechaTexto() + "\n";
         datosActividad += "Hora: " + actividad.getHoraInicio().substring(0, 5) + " - " + actividad.getHoraFin().substring(0, 5) + "\n\n";
         datosActividad += "¿Seguro que quieres reservar una plaza para esta actividad?";
 
@@ -92,14 +95,15 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
         builder.setPositiveButton(R.string.siDialog, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                System.out.println("Actividad reservada");
+                Log.d(tag, "Reservamos actividad");
+
             }
         });
 
         builder.setNegativeButton(R.string.noDialog, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                System.out.println("Actividad rechazada");
+                Log.d(tag, "No reservamos actividad");
             }
         });
 
