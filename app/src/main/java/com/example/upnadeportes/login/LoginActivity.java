@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.upnadeportes.MyApplication;
 import com.example.upnadeportes.R;
 import com.example.upnadeportes.registro.RegistroActivity;
 import com.example.upnadeportes.tabbed.ActividadesActivity;
@@ -77,13 +78,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser();
+                    setResult(Activity.RESULT_OK);
+                    int userId = Integer.valueOf(loginResult.getSuccess().getUserId());
+                    String email = loginResult.getSuccess().getEmail();
+                    ((MyApplication)getApplication()).setIdUsuario(userId);
+                    ((MyApplication)getApplication()).setEmailUsuario(email);
+                    Intent intent = new Intent(getApplicationContext(), ActividadesActivity.class);
+                    startActivity(intent);
                     // Login completado correctamente (iremos a la actividad principal)
                 }
-                setResult(Activity.RESULT_OK);
-                Intent intent = new Intent(getApplicationContext(), ActividadesActivity.class);
-                startActivity(intent);
-
-
             }
         });
 

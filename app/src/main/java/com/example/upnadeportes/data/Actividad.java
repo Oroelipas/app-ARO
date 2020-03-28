@@ -61,6 +61,13 @@ public class Actividad implements Serializable {
         return diaActividad;
     }
 
+    public String getFechaTextoBD() {
+        Locale espanol = new Locale("es","ES");
+        SimpleDateFormat dia = new SimpleDateFormat("dd-MM-yyyy", espanol);
+        String diaActividad = dia.format(this.fecha);
+        return diaActividad;
+    }
+
     public String toString() {
         String s = "Id Actividad: " + getIdActividad() + ", nombre: " + getNombre();
         s  = s + ", fecha: " + getFecha() + ", hora: " + getHoraInicio() + "-" + getHoraFin();

@@ -1,21 +1,39 @@
 package com.example.upnadeportes.tabbed;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.upnadeportes.ApiClient;
+import com.example.upnadeportes.MyApplication;
 import com.example.upnadeportes.R;
 import com.example.upnadeportes.data.Actividad;
+import com.example.upnadeportes.login.LoggedInUserView;
+import com.example.upnadeportes.registro.RegistroResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<ActividadesRecyclerAdapter.ActividadesViewHolder> {
+
+    public final String TAG = this.getClass().getName();
 
     protected View.OnClickListener onClickListener;
     private ArrayList<Actividad> actividades;
@@ -97,6 +115,46 @@ public class ActividadesRecyclerAdapter extends RecyclerView.Adapter<Actividades
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(tag, "Reservamos actividad");
 
+                int idActividad = actividad.getIdActividad();
+                String fecha =  actividad.getFechaTextoBD();
+                String hora =  actividad.getHoraInicio();
+                int idUsuario = ((MyApplication)MyApplication.getContext()).getIdUsuario();
+
+                Call<ResponseBody> call = ApiClient.getInstance().getAwsApi().postReservar(idActividad, fecha, hora, idUsuario );
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            String json = response.body().string();
+                            JSONObject jsonRespuesta;
+                            jsonRespuesta = new JSONObject(json);
+                            if (jsonRespuesta.getString("error").equals("null")) {
+                                String texto = "Reserva completada";
+                                Toast toast = Toast.makeText(MyApplication.getContext(), texto, Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.show();
+                                Log.v(TAG,"Reserva correcta");
+                                String idReserva = (String) jsonRespuesta.get("idReserva");
+                            } else {
+                                if (jsonRespuesta.getInt("error") == 409) {
+                                    String texto = "Reserva ya realizada";
+                                    Toast toast = Toast.makeText(MyApplication.getContext(), texto, Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                    toast.show();
+                                    Log.v(TAG,"Reserva ya existente: 409");
+                                }
+                            }
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                            Log.v(TAG,"Error procesando la respuesta a la petición");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.v(TAG,"Error Reservando");
+                    }
+                });
             }
         });
 

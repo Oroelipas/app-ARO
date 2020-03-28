@@ -38,4 +38,13 @@ public interface ApiInterface {
             @Field("sexo") String sexo
     );
 
+    @FormUrlEncoded
+    @POST("web-aro/api/reservar")
+    Call<ResponseBody> postReservar(
+            @Field("IdActividad") int IdActividad,
+            @Field("fecha") String fecha, //(dd-mm-yyyy)
+            @Field("hora") String hora, // (hh:mm:ss)
+            @Field("idUsuario") int idUsuario
+    );
+
 }

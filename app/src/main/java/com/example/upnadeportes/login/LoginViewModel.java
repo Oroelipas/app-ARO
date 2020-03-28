@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.upnadeportes.ApiClient;
+import com.example.upnadeportes.MyApplication;
 import com.example.upnadeportes.R;
 
 import org.json.JSONException;
@@ -39,7 +40,6 @@ public class LoginViewModel extends ViewModel {
     public void login(String email, String password) {
 
         // Se realiza la operación de login de usuario
-
         Call<ResponseBody> call = ApiClient.getInstance().getAwsApi().postLogin(email, password);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
