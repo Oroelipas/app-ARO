@@ -1,15 +1,14 @@
 package com.example.upnadeportes.login;
 
+import android.util.Log;
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Log;
-import android.util.Patterns;
-
 import com.example.upnadeportes.ApiClient;
 import com.example.upnadeportes.R;
-import com.example.upnadeportes.registro.RegistroResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -100,4 +99,6 @@ public class LoginViewModel extends ViewModel {
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
     }
+
+
 }

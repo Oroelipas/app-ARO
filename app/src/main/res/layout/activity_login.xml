@@ -15,12 +15,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/titulo_inicio_sesion"
+        android:id="@+id/titulo_formulario_registro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Iniciar sesión en"
+        android:text="@string/titulo_inicio_sesion"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="24sp" />
 

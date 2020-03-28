@@ -80,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
                     // Login completado correctamente (iremos a la actividad principal)
                 }
                 setResult(Activity.RESULT_OK);
+                Intent intent = new Intent(getApplicationContext(), ActividadesActivity.class);
+                startActivity(intent);
+
 
             }
         });

@@ -39,6 +39,9 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="hora">hora</string>
     <string name="actividad">actividad</string>
+    <string name="titulo_inicio_sesion">Iniciar sesión en</string>
+    <string name="titulo_formulario_registro">Formulario de registro</string>
+
 
     <!-- Strings de AlertDialog para llamar a la reserva del WebView -->
     <string name="tituloDialog">Reservar</string>

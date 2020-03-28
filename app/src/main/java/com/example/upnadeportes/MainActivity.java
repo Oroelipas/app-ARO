@@ -1,4 +1,5 @@
 package com.example.upnadeportes;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getJsonActividades();
+
     }
+
 
     public void getJsonActividades(){
         Call<ResponseBody> call = ApiClient.getInstance().getUpnaApi().getActividades("2020-03-09");

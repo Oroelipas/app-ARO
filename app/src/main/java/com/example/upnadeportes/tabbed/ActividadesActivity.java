@@ -41,6 +41,8 @@ public class ActividadesActivity extends AppCompatActivity {
         if (diaSemana > 4)
             diaSemana = 0;
 
+
+
         // Se crea un adaptador de secciones.
         // Cada sección guardará la información de esa sección.
         // Ese adaptador está en una clase dentro del directorio ui.main
