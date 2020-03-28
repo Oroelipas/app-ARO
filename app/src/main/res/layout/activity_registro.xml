@@ -10,11 +10,21 @@
     android:orientation="vertical"
     tools:context=".registro.RegistroActivity">
 
+    <TextView
+        android:id="@+id/titulo_inicio_sesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Formulario de registro"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="24sp" />
+
     <EditText
         android:id="@+id/registro_nombre_completo"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:autofillHints=""
         android:hint="@string/prompt_nombre_completo"
         android:inputType="textPersonName"

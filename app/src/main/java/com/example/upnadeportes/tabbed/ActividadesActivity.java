@@ -39,7 +39,7 @@ public class ActividadesActivity extends AppCompatActivity {
         int diaSemana = Integer.valueOf(diaSemanaDate.format(d)) - 1;
         System.out.println(diaSemana);
         if (diaSemana > 4)
-            diaSemana = 1;
+            diaSemana = 0;
 
         // Se crea un adaptador de secciones.
         // Cada sección guardará la información de esa sección.

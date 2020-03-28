@@ -18,8 +18,8 @@
     <string name="prompt_email_registro">Email</string>
     <string name="prompt_password">Contraseña</string>
     <string name="prompt_password_repetir">Vuelva a introducir la contraseña</string>
-    <string name="action_log_in">Log in</string>
-    <string name="action_register">Registrar</string>
+    <string name="action_log_in">Entrar</string>
+    <string name="action_register">Registrarse</string>
     <string name="mensajeNoRegistrado">¿No estás registrado? ¡Regístrate ahora!</string>
     <string name="welcome">¡Bienvenido de nuevo! "</string>
     <string name="invalid_password_length">La contraseña debe tener >5 caracteres</string>
