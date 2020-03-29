@@ -26,15 +26,15 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="294dp"
-        android:layout_height="130dp"
+        android:layout_width="272dp"
+        android:layout_height="104dp"
         android:layout_marginTop="25dp"
         app:srcCompat="@drawable/logo_upnadepor" />
 
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="50dp" />
 
     <EditText
         android:id="@+id/login_email"
@@ -67,7 +67,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="7dp" />
+        android:layout_height="30dp" />
 
     <Button
         android:id="@+id/login"
@@ -112,15 +112,5 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="14dp" />
-
-    <Button
-        android:id="@+id/saltar_a_tabbed"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:gravity="center|center_horizontal"
-        android:onClick="saltarATabbed"
-        android:text="saltar a tabbed"
-        android:textColor="#FFFFFF" />
 
 </LinearLayout>

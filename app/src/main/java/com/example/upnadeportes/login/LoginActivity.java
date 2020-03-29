@@ -134,13 +134,13 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser() {
         String welcome = getString(R.string.welcome);
         Toast toast = Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast toast = Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
     }
 
@@ -151,10 +151,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void saltarATabbed(View view) {
-        Intent intent = new Intent(getApplicationContext(), ActividadesActivity.class);
-        startActivity(intent);
-    }
 
 
 }
