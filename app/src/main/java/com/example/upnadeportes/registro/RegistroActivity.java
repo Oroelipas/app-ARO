@@ -2,6 +2,8 @@ package com.example.upnadeportes.registro;
 
 import android.app.Activity;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +22,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.upnadeportes.ApiClient;
+import com.example.upnadeportes.MyApplication;
 import com.example.upnadeportes.R;
+import com.example.upnadeportes.tabbed.ActividadesActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -165,6 +169,13 @@ public class RegistroActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), "Registro OK", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.TOP, 0, 0);
                 toast.show();
+                setResult(Activity.RESULT_OK);
+                int userId = Integer.valueOf(registroResult.getSuccess().getUserId());
+                String email = registroResult.getSuccess().getEmail();
+                ((MyApplication)getApplication()).setIdUsuario(userId);
+                ((MyApplication)getApplication()).setEmailUsuario(email);
+                Intent intent = new Intent(getApplicationContext(), ActividadesActivity.class);
+                startActivity(intent);
             }
             setResult(Activity.RESULT_OK);
         });

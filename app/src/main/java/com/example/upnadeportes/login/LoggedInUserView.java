@@ -19,8 +19,8 @@ public class LoggedInUserView {
         return nombreCompleto;
     }
 
-    String getUserId() { return userId; }
+    public String getUserId() { return userId; }
 
-    String getEmail() { return email; }
+    public String getEmail() { return email; }
 
 }

@@ -24,7 +24,7 @@ public interface ApiInterface {
     @POST("web-aro/api/login")
     Call<ResponseBody> postLogin(
             @Field("email") String email,
-            @Field("hash") String hash
+            @Field("password") String password
     );
 
     @FormUrlEncoded
@@ -33,7 +33,7 @@ public interface ApiInterface {
             @Field("nombre") String nombre,
             @Field("email") String email,
             @Field("idCarrera") String idCarrera,
-            @Field("hash") String hash,
+            @Field("password") String password,
             @Field("fNacimiento") String fNacimiento,
             @Field("sexo") String sexo
     );
